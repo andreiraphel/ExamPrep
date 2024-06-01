@@ -88,6 +88,8 @@ class NewTopic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _textController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('New topic'),
@@ -98,13 +100,19 @@ class NewTopic extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              controller: _textController,
               autofocus: true,
               decoration: InputDecoration(labelText: 'Topic'),
             ),
           ),
           ElevatedButton(
             onPressed: () {
-              topicsKey.currentState?.addItem('newItem');
+              String topic = _textController.text;
+              if (topic.isNotEmpty) {
+                topicsKey.currentState?.addItem(topic);
+                _textController.clear();
+                Navigator.pop(context);
+              }
             },
             child: Text('Add Topic'),
           ),
