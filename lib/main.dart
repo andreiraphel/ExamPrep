@@ -29,27 +29,25 @@ class Topics extends StatefulWidget {
   const Topics({super.key});
 
   @override
-  State<Topics> createState() => _ChecklistState();
+  State<Topics> createState() => _TopicsState();
 }
 
-class _ChecklistState extends State<Topics> {
+class _TopicsState extends State<Topics> {
   List<String> items = [];
 
   @override
   Widget build(BuildContext context) {
-    if (items.isEmpty) {
-      return const Center(
-        child: Text('Please add a topic'),
-      );
-    } else {
-      return ListView.builder(
-          itemCount: items.length,
-          itemBuilder: ((context, index) {
-            return ListTile(
-              title: Text(items[index]),
-            );
-          }));
-    }
+    return items.isEmpty
+        ? const Center(
+            child: Text('Please add a topic'),
+          )
+        : ListView.builder(
+            itemCount: items.length,
+            itemBuilder: ((context, index) {
+              return ListTile(
+                title: Text(items[index]),
+              );
+            }));
   }
 }
 
