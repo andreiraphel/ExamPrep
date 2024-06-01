@@ -98,7 +98,7 @@ class NewTopic extends StatelessWidget {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(50.0),
             child: TextField(
               controller: _textController,
               autofocus: true,
