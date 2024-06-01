@@ -19,20 +19,20 @@ class Home extends StatelessWidget {
         title: const Text('ExamPrep'),
         backgroundColor: Colors.blueGrey,
       ),
-      body: Checklist(),
+      body: Topics(),
       floatingActionButton: AddItem(),
     );
   }
 }
 
-class Checklist extends StatefulWidget {
-  const Checklist({super.key});
+class Topics extends StatefulWidget {
+  const Topics({super.key});
 
   @override
-  State<Checklist> createState() => _ChecklistState();
+  State<Topics> createState() => _ChecklistState();
 }
 
-class _ChecklistState extends State<Checklist> {
+class _ChecklistState extends State<Topics> {
   List<String> items = [];
 
   @override
