@@ -18,17 +18,23 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ExamPrep'),
-        backgroundColor: Colors.blueGrey,
+        title: const Text(
+          'ExamPrep',
+          style: TextStyle(color: Color(0xFFEEEEEE)),
+        ),
+        backgroundColor: Color(0xFF31363F),
         actions: [
           IconButton(
-              onPressed: () {
-                topicsKey.currentState?.toggleDelete();
-              },
-              icon: Icon(Icons.delete))
+            onPressed: () {
+              topicsKey.currentState?.toggleDelete();
+            },
+            icon: Icon(Icons.delete),
+            color: Color(0xFF76ABAE),
+          ),
         ],
       ),
       body: Topics(key: topicsKey),
+      backgroundColor: Color(0xFFEEEEEE),
       floatingActionButton: AddItem(topicsKey: topicsKey),
     );
   }
@@ -109,9 +115,17 @@ class _TopicsState extends State<Topics> {
                         },
                       )
                     else ...[
-                      Icon(Icons.add),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.add),
+                        color: Color(0xFF76ABAE),
+                      ),
                       const SizedBox(width: 10),
-                      Icon(Icons.play_arrow),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.play_arrow),
+                        color: Color(0xFF76ABAE),
+                      ),
                     ]
                   ],
                 ),
@@ -138,7 +152,8 @@ class AddItem extends StatelessWidget {
         );
       },
       tooltip: 'Add Item',
-      child: Icon(Icons.add),
+      child: Icon(Icons.add, color: Color(0xFF76ABAE)),
+      backgroundColor: Color(0xFF222831),
     );
   }
 }
@@ -153,8 +168,11 @@ class NewTopic extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New topic'),
-        backgroundColor: Colors.blueGrey,
+        title: const Text(
+          'New Topic',
+          style: TextStyle(color: Color(0xFFEEEEEE)),
+        ),
+        backgroundColor: Color(0xFF31363F),
       ),
       body: Column(
         children: [
