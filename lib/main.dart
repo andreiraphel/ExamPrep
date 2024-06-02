@@ -51,16 +51,39 @@ class _TopicsState extends State<Topics> {
     });
   }
 
-  void deleteItem(int index) {
-    setState(() {
-      items.removeAt(index);
-    });
-  }
-
   void toggleDelete() {
     setState(() {
       deleteBool = !deleteBool;
     });
+  }
+
+  Future<void> deleteItem(int index) async {
+    bool confirmDelete = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Confirm Deletion'),
+            content: Text('Are you sure you want to delete this item?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: Text('Delete'),
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text('Cancel')),
+            ],
+          );
+        });
+    if (confirmDelete == true) {
+      setState(() {
+        items.removeAt(index);
+      });
+    }
   }
 
   @override
