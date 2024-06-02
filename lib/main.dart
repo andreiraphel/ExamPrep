@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,6 +22,7 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         title: const Text('ExamPrep'),
         backgroundColor: Colors.blueGrey,
+        actions: [IconButton(onPressed: null, icon: Icon(Icons.delete))],
       ),
       body: Topics(key: topicsKey),
       floatingActionButton: AddItem(topicsKey: topicsKey),
@@ -36,10 +39,17 @@ class Topics extends StatefulWidget {
 
 class _TopicsState extends State<Topics> {
   List<String> items = [];
+  bool deleteBool = false;
 
   void addItem(String newItem) {
     setState(() {
       items.add(newItem);
+    });
+  }
+
+  void deleteItem(int index) {
+    setState(() {
+      items.removeAt(index);
     });
   }
 
@@ -54,6 +64,15 @@ class _TopicsState extends State<Topics> {
             itemBuilder: ((context, index) {
               return ListTile(
                 title: Text(items[index]),
+                trailing: deleteBool
+                    ? IconButton(
+                        icon: Icon(Icons.delete),
+                        color: Colors.red,
+                        onPressed: () {
+                          deleteItem(index);
+                        },
+                      )
+                    : null,
               );
             }),
           );
