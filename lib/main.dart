@@ -74,15 +74,24 @@ class _TopicsState extends State<Topics> {
             itemBuilder: ((context, index) {
               return ListTile(
                 title: Text(items[index]),
-                trailing: deleteBool
-                    ? IconButton(
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (deleteBool)
+                      IconButton(
                         icon: Icon(Icons.delete),
                         color: Colors.red,
                         onPressed: () {
                           deleteItem(index);
                         },
                       )
-                    : Icon(Icons.add),
+                    else ...[
+                      Icon(Icons.add),
+                      const SizedBox(width: 10),
+                      Icon(Icons.play_arrow),
+                    ]
+                  ],
+                ),
               );
             }),
           );
