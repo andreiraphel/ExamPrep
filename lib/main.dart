@@ -1,18 +1,16 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    MaterialApp(
+    const MaterialApp(
       title: 'ExamPrep',
-      home: const Home(),
+      home: Home(),
     ),
   );
 }
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,13 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         title: const Text('ExamPrep'),
         backgroundColor: Colors.blueGrey,
-        actions: [IconButton(onPressed: null, icon: Icon(Icons.delete))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                topicsKey.currentState?.toggleDelete();
+              },
+              icon: Icon(Icons.delete))
+        ],
       ),
       body: Topics(key: topicsKey),
       floatingActionButton: AddItem(topicsKey: topicsKey),
@@ -53,6 +57,12 @@ class _TopicsState extends State<Topics> {
     });
   }
 
+  void toggleDelete() {
+    setState(() {
+      deleteBool = !deleteBool;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return items.isEmpty
@@ -72,7 +82,7 @@ class _TopicsState extends State<Topics> {
                           deleteItem(index);
                         },
                       )
-                    : null,
+                    : Icon(Icons.add),
               );
             }),
           );
