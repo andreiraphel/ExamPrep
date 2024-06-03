@@ -38,8 +38,34 @@ class TopicsState extends State<Topics> {
   }
 
   Future<void> deleteItem(int id) async {
-    await dbHelper.deleteTopic(id);
-    _loadTopics();
+    bool confirmDelete = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Deletion'),
+          content: Text('Are you sure you want to delete this item?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmDelete == true) {
+      await dbHelper.deleteTopic(id);
+      _loadTopics();
+    }
   }
 
   @override
@@ -66,13 +92,17 @@ class TopicsState extends State<Topics> {
                       )
                     else ...[
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // IMPLEMENT ADD FLASHCARD FUNCTION
+                        },
                         icon: Icon(Icons.add),
                         color: Color(0xFF76ABAE),
                       ),
                       const SizedBox(width: 10),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // IMPLEMENT START FUNCTION
+                        },
                         icon: Icon(Icons.play_arrow),
                         color: Color(0xFF76ABAE),
                       ),
