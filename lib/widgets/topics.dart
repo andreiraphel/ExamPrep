@@ -92,13 +92,17 @@ class TopicsState extends State<Topics> {
                       )
                     else ...[
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // IMPLEMENT ADD FLASHCARD FUNCTION
+                        },
                         icon: Icon(Icons.add),
                         color: Color(0xFF76ABAE),
                       ),
                       const SizedBox(width: 10),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // IMPLEMENT START FUNCTION
+                        },
                         icon: Icon(Icons.play_arrow),
                         color: Color(0xFF76ABAE),
                       ),

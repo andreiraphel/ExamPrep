@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import '../widgets/topics.dart';
 import '../widgets/add_item.dart';
 
+enum MenuItem { Delete, Feedback, Report }
+
 class Home extends StatelessWidget {
-  const Home({super.key});
+  const Home({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +19,42 @@ class Home extends StatelessWidget {
         ),
         backgroundColor: Color(0xFF31363F),
         actions: [
-          IconButton(
-            onPressed: () {
-              topicsKey.currentState?.toggleDelete();
+          PopupMenuButton<MenuItem>(
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+            onSelected: (MenuItem item) {
+              // Handle menu item selection here
+              switch (item) {
+                case MenuItem.Delete:
+                  final topicState = topicsKey.currentState;
+                  if (topicState != null) {
+                    topicState.toggleDelete();
+                  }
+                  break;
+                case MenuItem.Feedback:
+                  // Handle feedback
+                  break;
+                case MenuItem.Report:
+                  // Handle report
+                  break;
+              }
             },
-            icon: Icon(Icons.delete),
-            color: Color(0xFF76ABAE),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
+              const PopupMenuItem<MenuItem>(
+                value: MenuItem.Delete,
+                child: Text("Delete Topic"),
+              ),
+              const PopupMenuItem<MenuItem>(
+                value: MenuItem.Feedback,
+                child: Text('Feedback'),
+              ),
+              const PopupMenuItem<MenuItem>(
+                value: MenuItem.Report,
+                child: Text('Report'),
+              ),
+            ],
           ),
         ],
       ),
