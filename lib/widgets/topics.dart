@@ -42,7 +42,7 @@ class TopicsState extends State<Topics> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Deletion'),
+          title: Text('Confirm'),
           content: Text('Are you sure you want to delete this item?'),
           actions: <Widget>[
             TextButton(
