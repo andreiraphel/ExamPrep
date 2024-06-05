@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../database_helper.dart';
+import '../screens/new_card.dart';
+import '../screens/topic_details.dart';
 
 class Topics extends StatefulWidget {
   const Topics({Key? key}) : super(key: key);
@@ -79,6 +81,16 @@ class TopicsState extends State<Topics> {
             itemBuilder: ((context, index) {
               return ListTile(
                 title: Text(items[index]['name']),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TopicDetails(
+                              topicId: items[index]['id'],
+                              topicName: items[index]['name'],
+                            )),
+                  );
+                },
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -93,7 +105,14 @@ class TopicsState extends State<Topics> {
                     else ...[
                       IconButton(
                         onPressed: () {
-                          // IMPLEMENT ADD FLASHCARD FUNCTION
+                          // ADD FLASHCARD FUNCTION
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NewCard(
+                                        topicName: items[index]['name'],
+                                        topicId: items[index]['id'],
+                                      )));
                         },
                         icon: Icon(Icons.add),
                         color: Color(0xFF76ABAE),

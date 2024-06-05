@@ -24,11 +24,21 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
-      onCreate: (db, version) {
-        return db.execute(
+      version: 2,
+      onCreate: (db, version) async {
+        await db.execute(
           'CREATE TABLE topics(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)',
         );
+        await db.execute(
+          'CREATE TABLE flashcards(id INTEGER PRIMARY KEY AUTOINCREMENT, topic_id INTEGER, question TEXT, answer TEXT, FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE)',
+        );
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute(
+            'CREATE TABLE flashcards(id INTEGER PRIMARY KEY AUTOINCREMENT, topic_id INTEGER, question TEXT, answer TEXT, FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE)',
+          );
+        }
       },
     );
   }
@@ -54,6 +64,30 @@ class DatabaseHelper {
       'topics',
       where: 'id = ?',
       whereArgs: [id],
+    );
+  }
+
+  Future<void> insertFlashcard(
+      int topicId, String question, String answer) async {
+    final db = await database;
+
+    await db.insert(
+      'flashcards',
+      {
+        'topic_id': topicId,
+        'question': question,
+        'answer': answer,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getFlashcards(int topicId) async {
+    final db = await database;
+    return await db.query(
+      'flashcards',
+      where: 'topic_id = ?',
+      whereArgs: [topicId],
     );
   }
 }
