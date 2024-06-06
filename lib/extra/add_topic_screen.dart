@@ -17,7 +17,8 @@ class _AddTopicScreenState extends State<AddTopicScreen> {
     if (_formKey.currentState!.validate()) {
       String newTopic = _topicController.text;
       await dbHelper.insertTopic(newTopic);
-      Navigator.pop(context, true); // Return to the previous screen with a success flag
+      Navigator.pop(
+          context, true); // Return to the previous screen with a success flag
     }
   }
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../widgets/topics.dart';
 import '../widgets/add_item.dart';
+import '../screens/settings_screen.dart';
 
-enum MenuItem { Delete, Feedback, Report }
+enum MenuItem { Delete, Settings, Feedback, Report }
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -26,6 +27,14 @@ class _HomeState extends State<Home> {
             showCancelButton = true;
           });
         }
+        break;
+      case MenuItem.Settings:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SettingsScreen(),
+          ),
+        );
         break;
       case MenuItem.Feedback:
         // Handle feedback
@@ -65,7 +74,7 @@ class _HomeState extends State<Home> {
           else
             PopupMenuButton<MenuItem>(
               icon: const Icon(
-                Icons.more_vert,
+                Icons.settings,
                 color: Colors.white,
               ),
               onSelected: handleMenuItemSelected,
@@ -73,6 +82,10 @@ class _HomeState extends State<Home> {
                 const PopupMenuItem<MenuItem>(
                   value: MenuItem.Delete,
                   child: Text("Delete Topic"),
+                ),
+                const PopupMenuItem<MenuItem>(
+                  value: MenuItem.Settings,
+                  child: Text('Settings'),
                 ),
                 const PopupMenuItem<MenuItem>(
                   value: MenuItem.Feedback,
