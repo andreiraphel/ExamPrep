@@ -3,7 +3,7 @@ import '../widgets/topics.dart';
 import '../widgets/add_item.dart';
 import '../screens/settings_screen.dart';
 
-enum MenuItem { Delete, Settings, Feedback, Report }
+enum MenuItem { Delete, Settings, Feedback, Import }
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
       case MenuItem.Feedback:
         // Handle feedback
         break;
-      case MenuItem.Report:
+      case MenuItem.Import:
         // Handle report
         break;
     }
@@ -89,11 +89,11 @@ class _HomeState extends State<Home> {
                 ),
                 const PopupMenuItem<MenuItem>(
                   value: MenuItem.Feedback,
-                  child: Text('Feedback'),
+                  child: Text('Feedback/Report'),
                 ),
                 const PopupMenuItem<MenuItem>(
-                  value: MenuItem.Report,
-                  child: Text('Report'),
+                  value: MenuItem.Import,
+                  child: Text('Import/Export'),
                 ),
               ],
             ),
