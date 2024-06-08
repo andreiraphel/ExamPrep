@@ -30,13 +30,23 @@ class DatabaseHelper {
           'CREATE TABLE topics(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)',
         );
         await db.execute(
-          'CREATE TABLE flashcards(id INTEGER PRIMARY KEY AUTOINCREMENT, topic_id INTEGER, question TEXT, answer TEXT, FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE)',
+          'CREATE TABLE flashcards('
+          'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+          'topic_id INTEGER, '
+          'question TEXT, '
+          'answer TEXT, '
+          'FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE)',
         );
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
           await db.execute(
-            'CREATE TABLE flashcards(id INTEGER PRIMARY KEY AUTOINCREMENT, topic_id INTEGER, question TEXT, answer TEXT, FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE)',
+            'CREATE TABLE flashcards('
+            'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+            'topic_id INTEGER, '
+            'question TEXT, '
+            'answer TEXT, '
+            'FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE)',
           );
         }
       },
@@ -79,6 +89,15 @@ class DatabaseHelper {
         'answer': answer,
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> deleteFlashcard(int id) async {
+    final db = await database;
+    await db.delete(
+      'flashcards',
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 

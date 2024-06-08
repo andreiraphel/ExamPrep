@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../database_helper.dart';
+import '../screens/new_card.dart';
 
 class TopicDetails extends StatelessWidget {
   final int topicId;
@@ -29,14 +30,57 @@ class TopicDetails extends StatelessWidget {
             return Center(child: Text('No flashcards available'));
           } else {
             final flashcards = snapshot.data!;
-            return ListView.builder(
-              itemCount: flashcards.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(flashcards[index]['question']),
-                  subtitle: Text(flashcards[index]['answer']),
-                );
-              },
+            final itemCount = flashcards.length;
+
+            return Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  width: 500,
+                  alignment: Alignment.center,
+                  color: Color.fromARGB(255, 143, 143, 143),
+                  child: Text(
+                    'Flashcards: $itemCount',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        // NEW FLASHCARD FUNCTION
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewCard(
+                                      topicName: topicName,
+                                      topicId: topicId,
+                                    )));
+                      },
+                      icon: Icon(Icons.add),
+                      color: Color(0xFF76ABAE),
+                    ),
+                    const SizedBox(width: 10),
+                    IconButton(
+                      onPressed: () {
+                        // IMPLEMENT START FUNCTION
+                      },
+                      icon: Icon(Icons.play_arrow),
+                      color: Color(0xFF76ABAE),
+                    ),
+                  ],
+                ),
+                Expanded(
+                    child: ListView.builder(
+                  itemCount: itemCount,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(flashcards[index]['question']),
+                      subtitle: Text(flashcards[index]['answer']),
+                    );
+                  },
+                )),
+              ],
             );
           }
         },
