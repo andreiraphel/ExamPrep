@@ -105,7 +105,7 @@ class TopicsState extends State<Topics> {
                     else ...[
                       IconButton(
                         onPressed: () {
-                          // ADD FLASHCARD FUNCTION
+                          // NEW FLASHCARD FUNCTION
                           Navigator.push(
                               context,
                               MaterialPageRoute(
