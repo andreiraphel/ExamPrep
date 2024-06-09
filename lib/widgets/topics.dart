@@ -112,6 +112,10 @@ class TopicsState extends State<Topics> {
                                   builder: (context) => NewCard(
                                         topicName: items[index]['name'],
                                         topicId: items[index]['id'],
+                                        onFlashcardAdded: () {
+                                          setState(
+                                              () {}); // Rebuild when flashcard added
+                                        },
                                       )));
                         },
                         icon: Icon(Icons.add),

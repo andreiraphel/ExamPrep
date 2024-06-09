@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
 import '../database_helper.dart';
 import '../screens/new_card.dart';
+import '../widgets/flashcards.dart';
 
-class TopicDetails extends StatelessWidget {
+class TopicDetails extends StatefulWidget {
   final int topicId;
   final String topicName;
 
   const TopicDetails(
-      {super.key, required this.topicId, required this.topicName});
+      {Key? key, required this.topicId, required this.topicName});
 
+  @override
+  _TopicDetailsState createState() => _TopicDetailsState();
+}
+
+class _TopicDetailsState extends State<TopicDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          topicName,
+          widget.topicName,
           style: TextStyle(color: Color(0xFFEEEEEE)),
         ),
         backgroundColor: Color(0xFF31363F),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: DatabaseHelper().getFlashcards(topicId),
+        future: DatabaseHelper().getFlashcards(widget.topicId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -45,17 +51,22 @@ class TopicDetails extends StatelessWidget {
                   ),
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
                       onPressed: () {
-                        // NEW FLASHCARD FUNCTION
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NewCard(
-                                      topicName: topicName,
-                                      topicId: topicId,
-                                    )));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewCard(
+                              topicName: widget.topicName,
+                              topicId: widget.topicId,
+                              onFlashcardAdded: () {
+                                setState(() {}); // Rebuild when flashcard added
+                              },
+                            ),
+                          ),
+                        );
                       },
                       icon: Icon(Icons.add),
                       color: Color(0xFF76ABAE),
@@ -71,15 +82,10 @@ class TopicDetails extends StatelessWidget {
                   ],
                 ),
                 Expanded(
-                    child: ListView.builder(
-                  itemCount: itemCount,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(flashcards[index]['question']),
-                      subtitle: Text(flashcards[index]['answer']),
-                    );
-                  },
-                )),
+                  child: Flashcards(
+                    topicId: widget.topicId,
+                  ),
+                ),
               ],
             );
           }

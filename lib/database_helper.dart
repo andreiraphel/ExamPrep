@@ -109,4 +109,11 @@ class DatabaseHelper {
       whereArgs: [topicId],
     );
   }
+
+  Future<int> getFlashcardsCount(int topicId) async {
+    final db = await database;
+    final count = Sqflite.firstIntValue(await db.rawQuery(
+        'SELECT COUNT(*) FROM flashcards WHERE topicId = ?', [topicId]));
+    return count ?? 0;
+  }
 }
