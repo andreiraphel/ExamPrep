@@ -4,8 +4,14 @@ import '../database_helper.dart';
 class NewCard extends StatelessWidget {
   final String topicName;
   final int topicId;
+  final Function() onFlashcardAdded; // Add the callback function
 
-  const NewCard({super.key, required this.topicName, required this.topicId});
+  const NewCard(
+      {Key? key,
+      required this.topicName,
+      required this.topicId,
+      required this.onFlashcardAdded})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +59,7 @@ class NewCard extends StatelessWidget {
                 await dbHelper.insertFlashcard(topicId, question, answer);
                 _questionController.clear();
                 _answerController.clear();
+                onFlashcardAdded(); // Notify the parent widget
                 Navigator.pop(context);
               }
             },
