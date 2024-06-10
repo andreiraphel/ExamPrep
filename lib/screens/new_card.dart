@@ -4,7 +4,7 @@ import '../database_helper.dart';
 class NewCard extends StatelessWidget {
   final String topicName;
   final int topicId;
-  final Function() onFlashcardAdded; // Add the callback function
+  final Function() onFlashcardAdded;
 
   const NewCard(
       {Key? key,
