@@ -12,6 +12,56 @@ class Flashcards extends StatefulWidget {
 }
 
 class _FlashcardsState extends State<Flashcards> {
+  
+  bool deleteBool = false;
+  final dbHelper = DatabaseHelper();
+
+  @override
+  
+
+  void addItem(String newQuestion, String newAnswer) async {
+    await dbHelper.insertFlashcard(widget.topicId, newQuestion, newAnswer);
+    _loadFlashcards();
+  }
+
+  void toggleDelete() {
+    setState(() {
+      deleteBool = !deleteBool;
+    });
+  }
+
+  
+
+  @override
+  Widget build(BuildContext context) {
+    final itemCount = items.length;
+
+    return ListView.builder(
+      itemCount: itemCount,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(items[index]['question']),
+          subtitle: Text(items[index]['answer']),
+        );
+      },
+    );
+  }
+}
+*/
+
+import 'package:flutter/material.dart';
+import '../database_helper.dart';
+
+class Flashcards extends StatefulWidget {
+  final int topicId;
+
+  const Flashcards({Key? key, required this.topicId});
+
+  @override
+  State<Flashcards> createState() => FlashcardsState();
+}
+
+class FlashcardsState extends State<Flashcards> {
   List<Map<String, dynamic>> items = [];
   bool deleteBool = false;
   final dbHelper = DatabaseHelper();
@@ -28,11 +78,6 @@ class _FlashcardsState extends State<Flashcards> {
     setState(() {
       items = flashcards;
     });
-  }
-
-  void addItem(String newQuestion, String newAnswer) async {
-    await dbHelper.insertFlashcard(widget.topicId, newQuestion, newAnswer);
-    _loadFlashcards();
   }
 
   void toggleDelete() {
@@ -74,37 +119,6 @@ class _FlashcardsState extends State<Flashcards> {
 
   @override
   Widget build(BuildContext context) {
-    final itemCount = items.length;
-
-    return ListView.builder(
-      itemCount: itemCount,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(items[index]['question']),
-          subtitle: Text(items[index]['answer']),
-        );
-      },
-    );
-  }
-}
-*/
-import 'package:flutter/material.dart';
-import '../database_helper.dart';
-
-class Flashcards extends StatefulWidget {
-  final int topicId;
-
-  const Flashcards({Key? key, required this.topicId});
-
-  @override
-  State<Flashcards> createState() => _FlashcardsState();
-}
-
-class _FlashcardsState extends State<Flashcards> {
-  @override
-  Widget build(BuildContext context) {
-    final dbHelper = DatabaseHelper();
-
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: dbHelper.getFlashcards(widget.topicId),
       builder: (context, snapshot) {
@@ -124,6 +138,16 @@ class _FlashcardsState extends State<Flashcards> {
               return ListTile(
                 title: Text(flashcards[index]['question']),
                 subtitle: Text(flashcards[index]['answer']),
+                trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                  if (deleteBool)
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      color: Colors.red,
+                      onPressed: () {
+                        deleteItem(items[index]['id']);
+                      },
+                    )
+                ]),
               );
             },
           );
