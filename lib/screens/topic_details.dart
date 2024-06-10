@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../database_helper.dart';
 import '../screens/new_card.dart';
 import '../widgets/flashcards.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 enum MenuItem { Delete, Import }
 
@@ -50,11 +51,12 @@ class _TopicDetailsState extends State<TopicDetails> {
     }
   }
 
-  void _refreshFlashcards() {
+  Future<void> _refreshFlashcards() async {
     final topicState = flashcardsKey.currentState;
     if (topicState != null) {
       topicState.loadFlashcards();
     }
+    setState(() {}); // Refresh the state to update the FutureBuilder
   }
 
   @override
@@ -106,13 +108,45 @@ class _TopicDetailsState extends State<TopicDetails> {
           return Column(
             children: [
               Container(
-                padding: EdgeInsets.all(16.0),
-                width: 500,
+                margin: EdgeInsets.all(16.0),
+                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF76ABAE), Color(0xFF31363F)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(15.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                width: double.infinity,
                 alignment: Alignment.center,
-                color: Color.fromARGB(255, 143, 143, 143),
-                child: Text(
-                  'Flashcards: $itemCount',
-                  style: TextStyle(color: Colors.white),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.flash_on,
+                      color: Colors.white,
+                      size: 24.0,
+                    ),
+                    SizedBox(width: 8.0),
+                    Text(
+                      'Flashcards: $itemCount',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto',
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Row(
@@ -130,7 +164,7 @@ class _TopicDetailsState extends State<TopicDetails> {
                           ),
                         ),
                       );
-                      _refreshFlashcards();
+                      _refreshFlashcards(); // Refresh after returning
                     },
                     icon: Icon(Icons.add),
                     color: Color(0xFF76ABAE),
