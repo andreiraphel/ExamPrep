@@ -1,64 +1,13 @@
-/*
 import 'package:flutter/material.dart';
 import '../database_helper.dart';
 
 class Flashcards extends StatefulWidget {
   final int topicId;
 
-  const Flashcards({super.key, required this.topicId});
+  const Flashcards({Key? key, required this.topicId}) : super(key: key);
 
   @override
-  State<Flashcards> createState() => _FlashcardsState();
-}
-
-class _FlashcardsState extends State<Flashcards> {
-  
-  bool deleteBool = false;
-  final dbHelper = DatabaseHelper();
-
-  @override
-  
-
-  void addItem(String newQuestion, String newAnswer) async {
-    await dbHelper.insertFlashcard(widget.topicId, newQuestion, newAnswer);
-    _loadFlashcards();
-  }
-
-  void toggleDelete() {
-    setState(() {
-      deleteBool = !deleteBool;
-    });
-  }
-
-  
-
-  @override
-  Widget build(BuildContext context) {
-    final itemCount = items.length;
-
-    return ListView.builder(
-      itemCount: itemCount,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(items[index]['question']),
-          subtitle: Text(items[index]['answer']),
-        );
-      },
-    );
-  }
-}
-*/
-
-import 'package:flutter/material.dart';
-import '../database_helper.dart';
-
-class Flashcards extends StatefulWidget {
-  final int topicId;
-
-  const Flashcards({Key? key, required this.topicId});
-
-  @override
-  State<Flashcards> createState() => FlashcardsState();
+  FlashcardsState createState() => FlashcardsState();
 }
 
 class FlashcardsState extends State<Flashcards> {
@@ -69,10 +18,10 @@ class FlashcardsState extends State<Flashcards> {
   @override
   void initState() {
     super.initState();
-    _loadFlashcards();
+    loadFlashcards();
   }
 
-  void _loadFlashcards() async {
+  void loadFlashcards() async {
     List<Map<String, dynamic>> flashcards =
         await dbHelper.getFlashcards(widget.topicId);
     setState(() {
@@ -113,31 +62,22 @@ class FlashcardsState extends State<Flashcards> {
 
     if (confirmDelete == true) {
       await dbHelper.deleteFlashcard(id);
-      _loadFlashcards();
+      loadFlashcards();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: dbHelper.getFlashcards(widget.topicId),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No flashcards available'));
-        } else {
-          final flashcards = snapshot.data!;
-          final itemCount = flashcards.length;
-
-          return ListView.builder(
-            itemCount: itemCount,
+    return items.isEmpty
+        ? const Center(
+            child: Text("Add flashcards"),
+          )
+        : ListView.builder(
+            itemCount: items.length,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(flashcards[index]['question']),
-                subtitle: Text(flashcards[index]['answer']),
+                title: Text(items[index]['question']),
+                subtitle: Text(items[index]['answer']),
                 trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                   if (deleteBool)
                     IconButton(
@@ -151,8 +91,5 @@ class FlashcardsState extends State<Flashcards> {
               );
             },
           );
-        }
-      },
-    );
   }
 }
