@@ -79,58 +79,76 @@ class TopicsState extends State<Topics> {
         : ListView.builder(
             itemCount: items.length,
             itemBuilder: ((context, index) {
-              return ListTile(
-                title: Text(items[index]['name']),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TopicDetails(
-                              topicId: items[index]['id'],
-                              topicName: items[index]['name'],
-                            )),
-                  );
-                },
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (deleteBool)
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        color: Colors.red,
-                        onPressed: () {
-                          deleteItem(items[index]['id']);
-                        },
-                      )
-                    else ...[
-                      IconButton(
-                        onPressed: () {
-                          // NEW FLASHCARD FUNCTION
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => NewCard(
-                                        topicName: items[index]['name'],
-                                        topicId: items[index]['id'],
-                                        onFlashcardAdded: () {
-                                          setState(
-                                              () {}); // Rebuild when flashcard added
-                                        },
-                                      )));
-                        },
-                        icon: Icon(Icons.add),
-                        color: Color(0xFF76ABAE),
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                    title: Text(
+                      items[index]['name'],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                      const SizedBox(width: 10),
-                      IconButton(
-                        onPressed: () {
-                          // IMPLEMENT START FUNCTION
-                        },
-                        icon: Icon(Icons.play_arrow),
-                        color: Color(0xFF76ABAE),
-                      ),
-                    ]
-                  ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TopicDetails(
+                                  topicId: items[index]['id'],
+                                  topicName: items[index]['name'],
+                                )),
+                      );
+                    },
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (deleteBool)
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            color: Colors.red,
+                            onPressed: () {
+                              deleteItem(items[index]['id']);
+                            },
+                          )
+                        else ...[
+                          IconButton(
+                            onPressed: () {
+                              // NEW FLASHCARD FUNCTION
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NewCard(
+                                            topicName: items[index]['name'],
+                                            topicId: items[index]['id'],
+                                            onFlashcardAdded: () {
+                                              setState(
+                                                  () {}); // Rebuild when flashcard added
+                                            },
+                                          )));
+                            },
+                            icon: Icon(Icons.add),
+                            color: Color(0xFF76ABAE),
+                          ),
+                          const SizedBox(width: 10),
+                          IconButton(
+                            onPressed: () {
+                              // IMPLEMENT START FUNCTION
+                            },
+                            icon: Icon(Icons.play_arrow),
+                            color: Color(0xFF76ABAE),
+                          ),
+                        ]
+                      ],
+                    ),
+                  ),
                 ),
               );
             }),

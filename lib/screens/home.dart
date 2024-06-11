@@ -61,7 +61,12 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text(
           'ExamPrep',
-          style: TextStyle(color: Color(0xFFEEEEEE)),
+          style: TextStyle(
+            color: Color(0xFFEEEEEE),
+            fontWeight: FontWeight.bold,
+            fontSize: 24.0,
+            fontFamily: 'Roboto',
+          ),
         ),
         backgroundColor: Color(0xFF31363F),
         actions: [
@@ -74,7 +79,7 @@ class _HomeState extends State<Home> {
           else
             PopupMenuButton<MenuItem>(
               icon: const Icon(
-                Icons.settings,
+                Icons.more_vert,
                 color: Colors.white,
               ),
               onSelected: handleMenuItemSelected,
