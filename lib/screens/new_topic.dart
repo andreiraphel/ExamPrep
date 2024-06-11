@@ -13,7 +13,11 @@ class NewTopic extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'New Topic',
-          style: TextStyle(color: Color(0xFFEEEEEE)),
+          style: TextStyle(
+            color: Color(0xFFEEEEEE),
+            fontWeight: FontWeight.bold,
+            fontSize: 24.0,
+          ),
         ),
         backgroundColor: Color(0xFF31363F),
       ),

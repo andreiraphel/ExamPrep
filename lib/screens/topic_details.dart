@@ -65,7 +65,11 @@ class _TopicDetailsState extends State<TopicDetails> {
       appBar: AppBar(
         title: Text(
           widget.topicName,
-          style: TextStyle(color: Color(0xFFEEEEEE)),
+          style: TextStyle(
+            color: const Color(0xFFEEEEEE),
+            fontWeight: FontWeight.bold,
+            fontSize: 24.0,
+          ),
         ),
         backgroundColor: Color(0xFF31363F),
         actions: [
@@ -111,7 +115,7 @@ class _TopicDetailsState extends State<TopicDetails> {
                 margin: EdgeInsets.all(16.0),
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: [Color(0xFF76ABAE), Color(0xFF31363F)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -131,15 +135,10 @@ class _TopicDetailsState extends State<TopicDetails> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.flash_on,
-                      color: Colors.white,
-                      size: 24.0,
-                    ),
                     SizedBox(width: 8.0),
                     Text(
                       'Flashcards: $itemCount',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -149,35 +148,59 @@ class _TopicDetailsState extends State<TopicDetails> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NewCard(
-                            topicName: widget.topicName,
-                            topicId: widget.topicId,
-                            onFlashcardAdded: _refreshFlashcards,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewCard(
+                              topicName: widget.topicName,
+                              topicId: widget.topicId,
+                              onFlashcardAdded: _refreshFlashcards,
+                            ),
                           ),
+                        );
+                        _refreshFlashcards(); // Refresh after returning
+                      },
+                      icon: Icon(Icons.add),
+                      label: Text('Add Flashcard'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF76ABAE),
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 12.0,
                         ),
-                      );
-                      _refreshFlashcards(); // Refresh after returning
-                    },
-                    icon: Icon(Icons.add),
-                    color: Color(0xFF76ABAE),
-                  ),
-                  const SizedBox(width: 10),
-                  IconButton(
-                    onPressed: () {
-                      // IMPLEMENT START FUNCTION
-                    },
-                    icon: Icon(Icons.play_arrow),
-                    color: Color(0xFF76ABAE),
-                  ),
-                ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        // IMPLEMENT START FUNCTION
+                      },
+                      icon: Icon(Icons.play_arrow),
+                      label: Text('Start'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF76ABAE),
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 12.0,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: Flashcards(

@@ -24,7 +24,11 @@ class NewCard extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           topicName,
-          style: const TextStyle(color: Color(0xFFEEEEEE)),
+          style: const TextStyle(
+            color: Color(0xFFEEEEEE),
+            fontWeight: FontWeight.bold,
+            fontSize: 24.0,
+          ),
         ),
         backgroundColor: const Color(0xFF31363F),
       ),

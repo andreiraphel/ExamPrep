@@ -68,28 +68,58 @@ class FlashcardsState extends State<Flashcards> {
 
   @override
   Widget build(BuildContext context) {
-    return items.isEmpty
-        ? const Center(
-            child: Text("Add flashcards"),
-          )
-        : ListView.builder(
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: dbHelper.getFlashcards(widget.topicId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text("Add flashcards"));
+        } else {
+          return ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(items[index]['question']),
-                subtitle: Text(items[index]['answer']),
-                trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                  if (deleteBool)
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      color: Colors.red,
-                      onPressed: () {
-                        deleteItem(items[index]['id']);
-                      },
-                    )
-                ]),
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                    title: Text(
+                      items[index]['question'],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    subtitle: Text(
+                      items[index]['answer'],
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    trailing: deleteBool
+                        ? IconButton(
+                            icon: Icon(Icons.delete),
+                            color: Colors.red,
+                            onPressed: () {
+                              deleteItem(items[index]['id']);
+                            },
+                          )
+                        : null,
+                  ),
+                ),
               );
             },
           );
+        }
+      },
+    );
   }
 }
