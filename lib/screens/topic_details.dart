@@ -3,6 +3,7 @@ import '../database_helper.dart';
 import '../screens/new_card.dart';
 import '../widgets/flashcards.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import '../flashcard_study_screen.dart'; // Import the new screen
 
 enum MenuItem { Delete, Import }
 
@@ -165,7 +166,7 @@ class _TopicDetailsState extends State<TopicDetails> {
                             ),
                           ),
                         );
-                        _refreshFlashcards(); // Refresh after returning
+                        _refreshFlashcards();
                       },
                       icon: Icon(Icons.add),
                       label: Text('Add Flashcard'),
@@ -183,7 +184,15 @@ class _TopicDetailsState extends State<TopicDetails> {
                     ),
                     ElevatedButton.icon(
                       onPressed: () {
-                        // IMPLEMENT START FUNCTION
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FlashcardStudyScreen(
+                              topicId: widget.topicId,
+                              flashcards: flashcards,
+                            ),
+                          ),
+                        );
                       },
                       icon: Icon(Icons.play_arrow),
                       label: Text('Start'),
