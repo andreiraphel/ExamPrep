@@ -28,9 +28,9 @@ class _TopicDetailsState extends State<TopicDetails> {
   void handleMenuItemSelected(MenuItem item) {
     switch (item) {
       case MenuItem.Delete:
-        final topicState = flashcardsKey.currentState;
-        if (topicState != null) {
-          topicState.toggleDelete();
+        final flashcardState = flashcardsKey.currentState;
+        if (flashcardState != null) {
+          flashcardState.toggleDelete();
           setState(() {
             showCancelButton = true;
           });
@@ -43,9 +43,9 @@ class _TopicDetailsState extends State<TopicDetails> {
   }
 
   void handleCancel() {
-    final topicState = flashcardsKey.currentState;
-    if (topicState != null) {
-      topicState.toggleDelete();
+    final flashcardState = flashcardsKey.currentState;
+    if (flashcardState != null) {
+      flashcardState.toggleDelete();
       setState(() {
         showCancelButton = false;
       });
@@ -53,9 +53,9 @@ class _TopicDetailsState extends State<TopicDetails> {
   }
 
   Future<void> _refreshFlashcards() async {
-    final topicState = flashcardsKey.currentState;
-    if (topicState != null) {
-      topicState.loadFlashcards();
+    final flashcardState = flashcardsKey.currentState;
+    if (flashcardState != null) {
+      flashcardState.loadFlashcards();
     }
     setState(() {});
   }
@@ -66,8 +66,8 @@ class _TopicDetailsState extends State<TopicDetails> {
       appBar: AppBar(
         title: Text(
           widget.topicName,
-          style: TextStyle(
-            color: const Color(0xFFEEEEEE),
+          style: const TextStyle(
+            color: Color(0xFFEEEEEE),
             fontWeight: FontWeight.bold,
             fontSize: 24.0,
           ),
@@ -83,7 +83,7 @@ class _TopicDetailsState extends State<TopicDetails> {
           else
             PopupMenuButton<MenuItem>(
               icon: const Icon(
-                Icons.more_vert_rounded,
+                Icons.more_vert,
                 color: Colors.white,
               ),
               onSelected: handleMenuItemSelected,

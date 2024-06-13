@@ -39,10 +39,10 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Study Flashcards',
           style: TextStyle(
-            color: const Color(0xFFEEEEEE),
+            color: Color(0xFFEEEEEE),
             fontWeight: FontWeight.bold,
             fontSize: 24.0,
           ),
@@ -67,7 +67,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                   width: double.infinity,
                   height: 250,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [
                         Color.fromARGB(255, 172, 172, 172),
                         Color(0xFF31363F)
@@ -80,7 +80,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                   child: Stack(
                     children: [
                       if (showAnswer)
-                        Positioned(
+                        const Positioned(
                           top: 8.0,
                           left: 8.0,
                           child: Text(
@@ -98,7 +98,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                           showAnswer
                               ? flashcard['answer']
                               : flashcard['question'],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 28.0,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -118,7 +118,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
               label: Text('Next'),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                 ),
