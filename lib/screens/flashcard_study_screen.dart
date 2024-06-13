@@ -93,6 +93,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                           ),
                         ),
                       Center(
+                          child: SingleChildScrollView(
                         child: Text(
                           showAnswer
                               ? flashcard['answer']
@@ -104,7 +105,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                      ),
+                      )),
                     ],
                   ),
                 ),

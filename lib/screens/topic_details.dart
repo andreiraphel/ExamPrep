@@ -3,7 +3,7 @@ import '../database_helper.dart';
 import '../screens/new_card.dart';
 import '../widgets/flashcards.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import '../flashcard_study_screen.dart'; // Import the new screen
+import '../screens/flashcard_study_screen.dart';
 
 enum MenuItem { Delete, Import }
 
@@ -57,7 +57,7 @@ class _TopicDetailsState extends State<TopicDetails> {
     if (topicState != null) {
       topicState.loadFlashcards();
     }
-    setState(() {}); // Refresh the state to update the FutureBuilder
+    setState(() {});
   }
 
   @override
@@ -83,7 +83,7 @@ class _TopicDetailsState extends State<TopicDetails> {
           else
             PopupMenuButton<MenuItem>(
               icon: const Icon(
-                Icons.menu_rounded,
+                Icons.more_vert_rounded,
                 color: Colors.white,
               ),
               onSelected: handleMenuItemSelected,
@@ -127,7 +127,7 @@ class _TopicDetailsState extends State<TopicDetails> {
                       color: Colors.black.withOpacity(0.2),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(0, 3), // changes position of shadow
+                      offset: Offset(0, 3),
                     ),
                   ],
                 ),
@@ -173,7 +173,7 @@ class _TopicDetailsState extends State<TopicDetails> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF76ABAE),
                         foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16.0,
                           vertical: 12.0,
                         ),
@@ -199,7 +199,7 @@ class _TopicDetailsState extends State<TopicDetails> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF76ABAE),
                         foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16.0,
                           vertical: 12.0,
                         ),
