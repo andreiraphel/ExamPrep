@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../database_helper.dart';
 import '../screens/new_card.dart';
 import '../screens/topic_details.dart';
+import '../screens/flashcard_study_screen.dart';
 
 class Topics extends StatefulWidget {
   const Topics({Key? key}) : super(key: key);
@@ -139,8 +140,18 @@ class TopicsState extends State<Topics> {
                           ),
                           const SizedBox(width: 10),
                           IconButton(
-                            onPressed: () {
+                            onPressed: () async {
                               // IMPLEMENT START FUNCTION
+                              List<Map<String, dynamic>> flashcards =
+                                  await dbHelper
+                                      .getFlashcards(items[index]['id']);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          FlashcardStudyScreen(
+                                              topicId: items[index]['id'],
+                                              flashcards: flashcards)));
                             },
                             icon: Icon(Icons.play_arrow),
                             color: Color(0xFF76ABAE),
