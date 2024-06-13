@@ -93,7 +93,7 @@ class TopicsState extends State<Topics> {
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
                     title: Text(
                       items[index]['name'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
@@ -130,8 +130,7 @@ class TopicsState extends State<Topics> {
                                             topicName: items[index]['name'],
                                             topicId: items[index]['id'],
                                             onFlashcardAdded: () {
-                                              setState(
-                                                  () {}); // Rebuild when flashcard added
+                                              setState(() {});
                                             },
                                           )));
                             },
@@ -141,7 +140,7 @@ class TopicsState extends State<Topics> {
                           const SizedBox(width: 10),
                           IconButton(
                             onPressed: () async {
-                              // IMPLEMENT START FUNCTION
+                              // START FLASHCARDS FUNCTION
                               List<Map<String, dynamic>> flashcards =
                                   await dbHelper
                                       .getFlashcards(items[index]['id']);

@@ -68,15 +68,11 @@ class FlashcardsState extends State<Flashcards> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: dbHelper.getFlashcards(widget.topicId),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text("Add flashcards"));
-        } else {
-          return ListView.builder(
+    return items.isEmpty
+        ? const Center(
+            child: Text('Add a topic'),
+          )
+        : ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {
               return Padding(
@@ -92,7 +88,7 @@ class FlashcardsState extends State<Flashcards> {
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
                     title: Text(
                       items[index]['question'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
@@ -118,8 +114,5 @@ class FlashcardsState extends State<Flashcards> {
               );
             },
           );
-        }
-      },
-    );
   }
 }
