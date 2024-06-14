@@ -36,6 +36,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
   @override
   Widget build(BuildContext context) {
     final flashcard = widget.flashcards[currentIndex];
+    print(flashcard);
 
     return Scaffold(
       appBar: AppBar(
