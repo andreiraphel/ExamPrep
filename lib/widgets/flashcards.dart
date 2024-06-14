@@ -77,7 +77,7 @@ class FlashcardsState extends State<Flashcards> {
             itemBuilder: (context, index) {
               return Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    const EdgeInsets.symmetric(vertical: 2.0, horizontal: 16.0),
                 child: Card(
                   elevation: 4,
                   shape: RoundedRectangleBorder(

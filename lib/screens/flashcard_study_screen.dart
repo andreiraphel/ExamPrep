@@ -80,19 +80,31 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                   ),
                   child: Stack(
                     children: [
-                      if (showAnswer)
-                        const Positioned(
-                          top: 8.0,
-                          left: 8.0,
-                          child: Text(
-                            'Answer:',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
+                      showAnswer
+                          ? const Positioned(
+                              top: 8.0,
+                              left: 8.0,
+                              child: Text(
+                                'Answer:',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          : const Positioned(
+                              top: 8.0,
+                              left: 8.0,
+                              child: Text(
+                                'Question:',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                       Center(
                           child: SingleChildScrollView(
                         child: Text(
