@@ -63,7 +63,7 @@ class NewCard extends StatelessWidget {
                 await dbHelper.insertFlashcard(topicId, question, answer);
                 _questionController.clear();
                 _answerController.clear();
-                onFlashcardAdded(); // Notify the parent widget
+                onFlashcardAdded();
                 Navigator.pop(context);
               }
             },

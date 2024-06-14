@@ -21,10 +21,11 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'topics.db');
+    print(await getDatabasesPath());
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: (db, version) async {
         await db.execute(
           'CREATE TABLE topics(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)',
@@ -35,19 +36,26 @@ class DatabaseHelper {
           'topic_id INTEGER, '
           'question TEXT, '
           'answer TEXT, '
+          'repetition INTEGER DEFAULT 0,'
+          'interval INTEGER DEFAULT 1,'
+          'easeFactor REAL DEFAULT 2.5,'
+          'nextReviewDate INTEGER,'
           'FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE)',
         );
       },
       onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 2) {
+        if (oldVersion < 3) {
           await db.execute(
-            'CREATE TABLE flashcards('
-            'id INTEGER PRIMARY KEY AUTOINCREMENT, '
-            'topic_id INTEGER, '
-            'question TEXT, '
-            'answer TEXT, '
-            'FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE)',
+            'ALTER TABLE flashcards ADD COLUMN repetition INTEGER DEFAULT 0',
           );
+          await db.execute(
+            'ALTER TABLE flashcards ADD COLUMN interval INTEGER DEFAULT 1',
+          );
+          await db.execute(
+            'ALTER TABLE flashcards ADD COLUMN easeFactor REAL DEFAULT 2.5',
+          );
+          await db.execute(
+              'ALTER TABLE flashcards ADD COLUMN nextReviewDate INTEGER DEFAULT 0');
         }
       },
     );
