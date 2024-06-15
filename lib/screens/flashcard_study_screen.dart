@@ -29,6 +29,8 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
         showAnswer = false;
         _answerController.clear();
         _isCorrect = false;
+      } else {
+        Navigator.pop(context); // Pop the widget to return to TopicDetails
       }
     });
   }
@@ -40,6 +42,9 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
   }
 
   Future<void> checkAnswer() async {
+    // Hide the keyboard
+    FocusScope.of(context).unfocus();
+
     setState(() {
       _isCorrect = _answerController.text.trim().toLowerCase() ==
           widget.flashcards[currentIndex]['answer'].trim().toLowerCase();
@@ -53,8 +58,33 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.flashcards.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Study Flashcards',
+            style: TextStyle(
+              color: Color(0xFFEEEEEE),
+              fontWeight: FontWeight.bold,
+              fontSize: 24.0,
+            ),
+          ),
+          backgroundColor: Color(0xFF31363F),
+        ),
+        body: Center(
+          child: Text(
+            'No flashcards available for this topic.',
+            style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
+    }
+
     final flashcard = widget.flashcards[currentIndex];
-    print(flashcard);
 
     return Scaffold(
       appBar: AppBar(
@@ -182,21 +212,25 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                 ),
               ),
             SizedBox(height: 10),
-            ElevatedButton.icon(
-              onPressed: nextFlashcard,
-              icon: Icon(Icons.arrow_forward),
-              label: Text('Next'),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
-                textStyle: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+            if (_isCorrect || showAnswer)
+              ElevatedButton.icon(
+                onPressed: nextFlashcard,
+                icon: Icon(Icons.arrow_forward),
+                label: Text(currentIndex < widget.flashcards.length - 1
+                    ? 'Next'
+                    : 'Finish'),
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+                  textStyle: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
