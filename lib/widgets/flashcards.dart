@@ -70,7 +70,7 @@ class FlashcardsState extends State<Flashcards> {
   Widget build(BuildContext context) {
     return items.isEmpty
         ? const Center(
-            child: Text('Add a topic'),
+            child: Text('Add flashcards'),
           )
         : ListView.builder(
             itemCount: items.length,
