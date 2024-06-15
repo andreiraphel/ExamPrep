@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import '../database_helper.dart';
 import '../screens/new_card.dart';
 import '../widgets/flashcards.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import '../screens/flashcard_study_screen.dart';
 
 enum MenuItem { Delete, Import }
@@ -110,6 +110,22 @@ class _TopicDetailsState extends State<TopicDetails> {
           final flashcards = snapshot.data!;
           final itemCount = flashcards.length;
 
+          // Calculate progress
+          final reviewedCount =
+              flashcards.where((fc) => fc['repetition'] > 0).length;
+          final progress = itemCount > 0 ? reviewedCount / itemCount : 0.0;
+
+          // Calculate next review date
+          final currentDate = DateTime.now().millisecondsSinceEpoch;
+          final nextReviewDates = flashcards
+              .map((fc) => fc['nextReviewDate'] as int)
+              .where((date) => date > currentDate)
+              .toList();
+          final nextReviewDate = nextReviewDates.isNotEmpty
+              ? DateTime.fromMillisecondsSinceEpoch(
+                  nextReviewDates.reduce((a, b) => a < b ? a : b))
+              : null;
+
           return Column(
             children: [
               Container(
@@ -136,7 +152,6 @@ class _TopicDetailsState extends State<TopicDetails> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 8.0),
                     Text(
                       'Flashcards: $itemCount',
                       style: const TextStyle(
@@ -145,6 +160,29 @@ class _TopicDetailsState extends State<TopicDetails> {
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Roboto',
                       ),
+                    ),
+                    SizedBox(width: 16.0),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        LinearPercentIndicator(
+                          width: 100.0,
+                          lineHeight: 14.0,
+                          percent: progress,
+                          backgroundColor: Colors.grey,
+                          progressColor: Colors.blue,
+                        ),
+                        SizedBox(height: 4.0),
+                        Text(
+                          'Next Review: ${nextReviewDate != null ? "${nextReviewDate.day}/${nextReviewDate.month}/${nextReviewDate.year}" : "None"}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto',
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

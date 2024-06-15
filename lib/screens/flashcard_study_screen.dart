@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../database_helper.dart';
 
 class FlashcardStudyScreen extends StatefulWidget {
   final int topicId;
@@ -19,6 +20,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
   bool showAnswer = false;
   final TextEditingController _answerController = TextEditingController();
   bool _isCorrect = false;
+  final DatabaseHelper dbHelper = DatabaseHelper();
 
   void nextFlashcard() {
     setState(() {
@@ -37,12 +39,16 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
     });
   }
 
-  void checkAnswer() {
+  Future<void> checkAnswer() async {
     setState(() {
       _isCorrect = _answerController.text.trim().toLowerCase() ==
           widget.flashcards[currentIndex]['answer'].trim().toLowerCase();
       showAnswer = true;
     });
+
+    // SM-2 algorithm
+    int quality = _isCorrect ? 5 : 0;
+    await dbHelper.applySM2(widget.flashcards[currentIndex]['id'], quality);
   }
 
   @override
