@@ -30,6 +30,7 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'topics.db');
+    print(await getDatabasesPath());
 
     return await openDatabase(
       path,
@@ -106,7 +107,7 @@ class DatabaseHelper {
         'repetition': 0,
         'interval': 1,
         'easeFactor': 2.5,
-        'nextReviewDate': DateTime.now().millisecondsSinceEpoch,
+        'nextReviewDate': 0,
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -137,27 +138,42 @@ class DatabaseHelper {
     return count ?? 0;
   }
 
-  Future<void> updateFlashcard(int flashcardId, int quality) async {
+  Future<void> updateFlashcard(int id, int repetition, int interval,
+      double easeFactor, int nextReviewDate) async {
     final db = await database;
 
-    // Retrieve the current state of the flashcard
-    List<Map<String, dynamic>> flashcardData = await db.query(
+    await db.update(
+      'flashcards',
+      {
+        'repetition': repetition,
+        'interval': interval,
+        'easeFactor': easeFactor,
+        'nextReviewDate': nextReviewDate,
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // SM-2 algorithm implementation
+  Future<void> applySM2(int flashcardId, int quality) async {
+    final db = await database;
+    final flashcard = (await db.query(
       'flashcards',
       where: 'id = ?',
       whereArgs: [flashcardId],
-    );
+    ))
+        .first;
 
-    if (flashcardData.isEmpty) {
-      return; // Flashcard not found
-    }
+    int repetition = flashcard['repetition'] as int;
+    int interval = flashcard['interval'] as int;
+    double easeFactor = flashcard['easeFactor'] as double;
+    int nextReviewDate = flashcard['nextReviewDate'] as int;
 
-    var flashcard = flashcardData.first;
-
-    int repetition = flashcard['repetition'];
-    double easeFactor = flashcard['easeFactor'];
-    int interval = flashcard['interval'];
-
-    if (quality >= 3) {
+    if (quality < 3) {
+      repetition = 0;
+      interval = 1;
+    } else {
       if (repetition == 0) {
         interval = 1;
       } else if (repetition == 1) {
@@ -165,41 +181,16 @@ class DatabaseHelper {
       } else {
         interval = (interval * easeFactor).round();
       }
-      repetition++;
-    } else {
-      repetition = 0;
-      interval = 1;
+      repetition += 1;
     }
 
-    easeFactor =
-        easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
-    if (easeFactor < 1.3) {
-      easeFactor = 1.3;
-    }
+    easeFactor += 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02);
+    if (easeFactor < 1.3) easeFactor = 1.3;
 
-    int nextReviewDate =
-        DateTime.now().add(Duration(days: interval)).millisecondsSinceEpoch;
+    nextReviewDate =
+        DateTime.now().millisecondsSinceEpoch + interval * 24 * 60 * 60 * 1000;
 
-    await db.update(
-      'flashcards',
-      {
-        'repetition': repetition,
-        'easeFactor': easeFactor,
-        'interval': interval,
-        'nextReviewDate': nextReviewDate,
-      },
-      where: 'id = ?',
-      whereArgs: [flashcardId],
-    );
-  }
-
-  Future<List<Map<String, dynamic>>> getDueFlashcards() async {
-    final db = await database;
-    int currentDate = DateTime.now().millisecondsSinceEpoch;
-    return await db.query(
-      'flashcards',
-      where: 'nextReviewDate <= ?',
-      whereArgs: [currentDate],
-    );
+    await updateFlashcard(
+        flashcardId, repetition, interval, easeFactor, nextReviewDate);
   }
 }
