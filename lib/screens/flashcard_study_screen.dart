@@ -17,12 +17,16 @@ class FlashcardStudyScreen extends StatefulWidget {
 class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
   int currentIndex = 0;
   bool showAnswer = false;
+  final TextEditingController _answerController = TextEditingController();
+  bool _isCorrect = false;
 
   void nextFlashcard() {
     setState(() {
       if (currentIndex < widget.flashcards.length - 1) {
         currentIndex++;
         showAnswer = false;
+        _answerController.clear();
+        _isCorrect = false;
       }
     });
   }
@@ -30,6 +34,14 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
   void toggleAnswer() {
     setState(() {
       showAnswer = !showAnswer;
+    });
+  }
+
+  void checkAnswer() {
+    setState(() {
+      _isCorrect = _answerController.text.trim().toLowerCase() ==
+          widget.flashcards[currentIndex]['answer'].trim().toLowerCase();
+      showAnswer = true;
     });
   }
 
@@ -50,7 +62,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
         ),
         backgroundColor: Color(0xFF31363F),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -106,25 +118,64 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                               ),
                             ),
                       Center(
-                          child: SingleChildScrollView(
-                        child: Text(
-                          showAnswer
-                              ? flashcard['answer']
-                              : flashcard['question'],
-                          style: const TextStyle(
-                            fontSize: 28.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                        child: SingleChildScrollView(
+                          child: Text(
+                            showAnswer
+                                ? flashcard['answer']
+                                : flashcard['question'],
+                            style: const TextStyle(
+                              fontSize: 28.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                      )),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
             SizedBox(height: 30),
+            TextField(
+              controller: _answerController,
+              decoration: InputDecoration(
+                hintText: 'Enter your answer',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                filled: true,
+                fillColor: Colors.grey[200],
+              ),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton.icon(
+              onPressed: checkAnswer,
+              icon: Icon(Icons.check),
+              label: Text('Check Answer'),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+                textStyle: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            if (showAnswer)
+              Text(
+                _isCorrect ? 'Correct!' : 'Incorrect. Try again!',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: _isCorrect ? Colors.green : Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            SizedBox(height: 10),
             ElevatedButton.icon(
               onPressed: nextFlashcard,
               icon: Icon(Icons.arrow_forward),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'dart:io';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -19,9 +20,16 @@ class DatabaseHelper {
     return _database!;
   }
 
+  Future<void> deleteDatabaseFile() async {
+    String path = join(await getDatabasesPath(), 'topics.db');
+    if (await File(path).exists()) {
+      await File(path).delete();
+      print("Database deleted successfully.");
+    }
+  }
+
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'topics.db');
-    print(await getDatabasesPath());
 
     return await openDatabase(
       path,
@@ -39,7 +47,7 @@ class DatabaseHelper {
           'repetition INTEGER DEFAULT 0,'
           'interval INTEGER DEFAULT 1,'
           'easeFactor REAL DEFAULT 2.5,'
-          'nextReviewDate INTEGER,'
+          'nextReviewDate INTEGER DEFAULT 0,'
           'FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE)',
         );
       },
@@ -95,6 +103,10 @@ class DatabaseHelper {
         'topic_id': topicId,
         'question': question,
         'answer': answer,
+        'repetition': 0,
+        'interval': 1,
+        'easeFactor': 2.5,
+        'nextReviewDate': DateTime.now().millisecondsSinceEpoch,
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -121,7 +133,73 @@ class DatabaseHelper {
   Future<int> getFlashcardsCount(int topicId) async {
     final db = await database;
     final count = Sqflite.firstIntValue(await db.rawQuery(
-        'SELECT COUNT(*) FROM flashcards WHERE topicId = ?', [topicId]));
+        'SELECT COUNT(*) FROM flashcards WHERE topic_id = ?', [topicId]));
     return count ?? 0;
+  }
+
+  Future<void> updateFlashcard(int flashcardId, int quality) async {
+    final db = await database;
+
+    // Retrieve the current state of the flashcard
+    List<Map<String, dynamic>> flashcardData = await db.query(
+      'flashcards',
+      where: 'id = ?',
+      whereArgs: [flashcardId],
+    );
+
+    if (flashcardData.isEmpty) {
+      return; // Flashcard not found
+    }
+
+    var flashcard = flashcardData.first;
+
+    int repetition = flashcard['repetition'];
+    double easeFactor = flashcard['easeFactor'];
+    int interval = flashcard['interval'];
+
+    if (quality >= 3) {
+      if (repetition == 0) {
+        interval = 1;
+      } else if (repetition == 1) {
+        interval = 6;
+      } else {
+        interval = (interval * easeFactor).round();
+      }
+      repetition++;
+    } else {
+      repetition = 0;
+      interval = 1;
+    }
+
+    easeFactor =
+        easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+    if (easeFactor < 1.3) {
+      easeFactor = 1.3;
+    }
+
+    int nextReviewDate =
+        DateTime.now().add(Duration(days: interval)).millisecondsSinceEpoch;
+
+    await db.update(
+      'flashcards',
+      {
+        'repetition': repetition,
+        'easeFactor': easeFactor,
+        'interval': interval,
+        'nextReviewDate': nextReviewDate,
+      },
+      where: 'id = ?',
+      whereArgs: [flashcardId],
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getDueFlashcards() async {
+    final db = await database;
+    int currentDate = DateTime.now().millisecondsSinceEpoch;
+    return await db.query(
+      'flashcards',
+      where: 'nextReviewDate <= ?',
+      whereArgs: [currentDate],
+    );
   }
 }
