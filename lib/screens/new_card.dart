@@ -6,12 +6,12 @@ class NewCard extends StatelessWidget {
   final int topicId;
   final Function() onFlashcardAdded;
 
-  const NewCard(
-      {Key? key,
-      required this.topicName,
-      required this.topicId,
-      required this.onFlashcardAdded})
-      : super(key: key);
+  const NewCard({
+    Key? key,
+    required this.topicName,
+    required this.topicId,
+    required this.onFlashcardAdded,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

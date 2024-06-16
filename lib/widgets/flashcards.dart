@@ -66,6 +66,20 @@ class FlashcardsState extends State<Flashcards> {
     }
   }
 
+  Widget buildProgressIndicator(int repetition) {
+    int bars = (repetition / 2).clamp(0, 5).toInt();
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(5, (index) {
+        return Icon(
+          Icons.star,
+          size: 16.0,
+          color: index < bars ? Colors.amber : Colors.grey,
+        );
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return items.isEmpty
@@ -108,7 +122,7 @@ class FlashcardsState extends State<Flashcards> {
                               deleteItem(items[index]['id']);
                             },
                           )
-                        : null,
+                        : buildProgressIndicator(items[index]['repetition']),
                   ),
                 ),
               );

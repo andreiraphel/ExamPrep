@@ -30,7 +30,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
         _answerController.clear();
         _isCorrect = false;
       } else {
-        Navigator.pop(context); // Pop the widget to return to TopicDetails
+        Navigator.pop(context);
       }
     });
   }
@@ -85,6 +85,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
     }
 
     final flashcard = widget.flashcards[currentIndex];
+    print(flashcard);
 
     return Scaffold(
       appBar: AppBar(
