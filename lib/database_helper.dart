@@ -170,27 +170,30 @@ class DatabaseHelper {
     double easeFactor = flashcard['easeFactor'] as double;
     int nextReviewDate = flashcard['nextReviewDate'] as int;
 
-    if (quality < 3) {
-      repetition = 0;
-      interval = 1;
-    } else {
-      if (repetition == 0) {
+    int currentDate = DateTime.now().millisecondsSinceEpoch;
+
+    if (currentDate >= nextReviewDate) {
+      if (quality < 3) {
+        repetition = 0;
         interval = 1;
-      } else if (repetition == 1) {
-        interval = 6;
       } else {
-        interval = (interval * easeFactor).round();
+        if (repetition == 0) {
+          interval = 1;
+        } else if (repetition == 1) {
+          interval = 6;
+        } else {
+          interval = (interval * easeFactor).round();
+        }
+        repetition += 1;
       }
-      repetition += 1;
+
+      easeFactor += 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02);
+      if (easeFactor < 1.3) easeFactor = 1.3;
+
+      nextReviewDate = currentDate + interval * 24 * 60 * 60 * 1000;
+
+      await updateFlashcard(
+          flashcardId, repetition, interval, easeFactor, nextReviewDate);
     }
-
-    easeFactor += 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02);
-    if (easeFactor < 1.3) easeFactor = 1.3;
-
-    nextReviewDate =
-        DateTime.now().millisecondsSinceEpoch + interval * 24 * 60 * 60 * 1000;
-
-    await updateFlashcard(
-        flashcardId, repetition, interval, easeFactor, nextReviewDate);
   }
 }

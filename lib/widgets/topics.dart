@@ -148,8 +148,9 @@ class TopicsState extends State<Topics> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           FlashcardStudyScreen(
-                                              topicId: items[index]['id'],
-                                              flashcards: flashcards)));
+                                            topicId: items[index]['id'],
+                                            flashcards: flashcards,
+                                          )));
                             },
                             icon: Icon(Icons.play_arrow),
                             color: Color(0xFF76ABAE),
