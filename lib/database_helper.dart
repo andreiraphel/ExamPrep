@@ -3,16 +3,20 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 
+// Class for databasae helper methods
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   static Database? _database;
 
+  // Factory constructor to return the singleton instance
   factory DatabaseHelper() {
     return _instance;
   }
 
+  // Private constructor
   DatabaseHelper._internal();
 
+  // Getter for the databaase instance, initiaalizes the database if it doens't exist
   Future<Database> get database async {
     if (_database != null) return _database!;
 
@@ -20,6 +24,7 @@ class DatabaseHelper {
     return _database!;
   }
 
+  // Method to delete the database file
   Future<void> deleteDatabaseFile() async {
     String path = join(await getDatabasesPath(), 'topics.db');
     if (await File(path).exists()) {
@@ -28,6 +33,7 @@ class DatabaseHelper {
     }
   }
 
+  // Method to initialize the database
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'topics.db');
     print(await getDatabasesPath());
@@ -70,6 +76,7 @@ class DatabaseHelper {
     );
   }
 
+  // Method to insert a new topic
   Future<void> insertTopic(String name) async {
     final db = await database;
 
@@ -80,11 +87,13 @@ class DatabaseHelper {
     );
   }
 
+  // Method to retrieve all topics
   Future<List<Map<String, dynamic>>> getTopics() async {
     final db = await database;
     return await db.query('topics');
   }
 
+  // Method to delete a topic by its ID
   Future<void> deleteTopic(int id) async {
     final db = await database;
     await db.delete(
@@ -94,6 +103,7 @@ class DatabaseHelper {
     );
   }
 
+  // Method to insert new flashcard
   Future<void> insertFlashcard(
       int topicId, String question, String answer) async {
     final db = await database;
@@ -113,6 +123,7 @@ class DatabaseHelper {
     );
   }
 
+  // Method to delete flashcard by its ID
   Future<void> deleteFlashcard(int id) async {
     final db = await database;
     await db.delete(
@@ -122,6 +133,7 @@ class DatabaseHelper {
     );
   }
 
+  // Method to retrieve flashcards by topic ID
   Future<List<Map<String, dynamic>>> getFlashcards(int topicId) async {
     final db = await database;
     return await db.query(
