@@ -19,10 +19,10 @@ class TopicsState extends State<Topics> {
   @override
   void initState() {
     super.initState();
-    _loadTopics();
+    loadTopics();
   }
 
-  void _loadTopics() async {
+  void loadTopics() async {
     List<Map<String, dynamic>> topics = await dbHelper.getTopics();
     setState(() {
       items = topics;
@@ -31,7 +31,7 @@ class TopicsState extends State<Topics> {
 
   void addItem(String newItem) async {
     await dbHelper.insertTopic(newItem);
-    _loadTopics();
+    loadTopics();
   }
 
   void toggleDelete() {
@@ -67,7 +67,7 @@ class TopicsState extends State<Topics> {
 
     if (confirmDelete == true) {
       await dbHelper.deleteTopic(id);
-      _loadTopics();
+      loadTopics();
     }
   }
 

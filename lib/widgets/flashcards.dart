@@ -67,7 +67,8 @@ class FlashcardsState extends State<Flashcards> {
   }
 
   Widget buildProgressIndicator(int repetition) {
-    int bars = (repetition / 2).clamp(0, 5).toInt();
+    int bars = (repetition).clamp(0, 5);
+    print('Building progress indicator: repetition=$repetition, bars=$bars');
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
