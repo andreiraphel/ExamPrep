@@ -84,13 +84,18 @@ class _HomeState extends State<Home> {
 
   Future<void> _exportData() async {
     try {
-      final directory = await getApplicationDocumentsDirectory();
-      final path = '${directory.path}/flashcards.json';
+      final directory = await getExternalStorageDirectory();
+      final path = '${directory!.path}/Download';
+      final directoryExists = await Directory(path).exists();
+      if (!directoryExists) {
+        await Directory(path).create(recursive: true);
+      }
+
       final data = await _getTopicsAndFlashcards();
-      final file = File(path);
+      final file = File('$path/flashcards.json');
       await file.writeAsString(jsonEncode(data));
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Data exported to $path')),
+        SnackBar(content: Text('Data exported to $path/flashcards.json')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -101,8 +106,8 @@ class _HomeState extends State<Home> {
 
   Future<void> _importData() async {
     try {
-      final directory = await getApplicationDocumentsDirectory();
-      final path = '${directory.path}/flashcards.json';
+      final directory = await getExternalStorageDirectory();
+      final path = '${directory!.path}/Download/flashcards.json';
       final file = File(path);
       if (await file.exists()) {
         final data = jsonDecode(await file.readAsString());
