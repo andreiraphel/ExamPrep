@@ -6,10 +6,10 @@ class FlashcardStudyScreen extends StatefulWidget {
   final List<Map<String, dynamic>> flashcards;
 
   const FlashcardStudyScreen({
-    Key? key,
+    super.key,
     required this.topicId,
     required this.flashcards,
-  }) : super(key: key);
+  });
 
   @override
   _FlashcardStudyScreenState createState() => _FlashcardStudyScreenState();
@@ -69,9 +69,9 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
               fontSize: 24.0,
             ),
           ),
-          backgroundColor: Color(0xFF31363F),
+          backgroundColor: const Color(0xFF31363F),
         ),
-        body: Center(
+        body: const Center(
           child: Text(
             'No flashcards available for this topic.',
             style: TextStyle(
@@ -97,7 +97,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
             fontSize: 24.0,
           ),
         ),
-        backgroundColor: Color(0xFF31363F),
+        backgroundColor: const Color(0xFF31363F),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -112,8 +112,8 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  padding: EdgeInsets.all(24.0),
+                  duration: const Duration(milliseconds: 300),
+                  padding: const EdgeInsets.all(24.0),
                   width: double.infinity,
                   height: 250,
                   decoration: BoxDecoration(
@@ -174,7 +174,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             TextField(
               controller: _answerController,
               decoration: InputDecoration(
@@ -186,13 +186,13 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                 fillColor: Colors.grey[200],
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton.icon(
               onPressed: checkAnswer,
-              icon: Icon(Icons.check),
-              label: Text('Check Answer'),
+              icon: const Icon(Icons.check),
+              label: const Text('Check Answer'),
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
                 textStyle: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -202,7 +202,7 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             if (showAnswer)
               Text(
                 _isCorrect ? 'Correct!' : 'Incorrect. Try again!',
@@ -212,17 +212,17 @@ class _FlashcardStudyScreenState extends State<FlashcardStudyScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             if (_isCorrect || showAnswer)
               ElevatedButton.icon(
                 onPressed: nextFlashcard,
-                icon: Icon(Icons.arrow_forward),
+                icon: const Icon(Icons.arrow_forward),
                 label: Text(currentIndex < widget.flashcards.length - 1
                     ? 'Next'
                     : 'Finish'),
                 style: ElevatedButton.styleFrom(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
                   textStyle: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,

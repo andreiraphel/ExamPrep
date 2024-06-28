@@ -12,10 +12,10 @@ class TopicDetails extends StatefulWidget {
   final String topicName;
 
   const TopicDetails({
-    Key? key,
+    super.key,
     required this.topicId,
     required this.topicName,
-  }) : super(key: key);
+  });
 
   @override
   _TopicDetailsState createState() => _TopicDetailsState();
@@ -72,12 +72,12 @@ class _TopicDetailsState extends State<TopicDetails> {
             fontSize: 24.0,
           ),
         ),
-        backgroundColor: Color(0xFF31363F),
+        backgroundColor: const Color(0xFF31363F),
         actions: [
           if (showCancelButton)
             IconButton(
               onPressed: handleCancel,
-              icon: Icon(Icons.cancel),
+              icon: const Icon(Icons.cancel),
               color: Colors.red,
             )
           else
@@ -104,7 +104,7 @@ class _TopicDetailsState extends State<TopicDetails> {
         future: DatabaseHelper().getFlashcards(widget.topicId),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           final flashcards = snapshot.data!;
@@ -129,8 +129,9 @@ class _TopicDetailsState extends State<TopicDetails> {
           return Column(
             children: [
               Container(
-                margin: EdgeInsets.all(16.0),
-                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+                margin: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 16.0, horizontal: 24.0),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [Color(0xFF76ABAE), Color(0xFF31363F)],
@@ -143,7 +144,7 @@ class _TopicDetailsState extends State<TopicDetails> {
                       color: Colors.black.withOpacity(0.2),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
@@ -161,7 +162,7 @@ class _TopicDetailsState extends State<TopicDetails> {
                         fontFamily: 'Roboto',
                       ),
                     ),
-                    SizedBox(width: 16.0),
+                    const SizedBox(width: 16.0),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -172,7 +173,7 @@ class _TopicDetailsState extends State<TopicDetails> {
                           backgroundColor: Colors.grey,
                           progressColor: Colors.blue,
                         ),
-                        SizedBox(height: 4.0),
+                        const SizedBox(height: 4.0),
                         Text(
                           'Next Review: ${nextReviewDate != null ? "${nextReviewDate.day}/${nextReviewDate.month}/${nextReviewDate.year}" : "None"}',
                           style: const TextStyle(
@@ -206,10 +207,10 @@ class _TopicDetailsState extends State<TopicDetails> {
                         );
                         _refreshFlashcards();
                       },
-                      icon: Icon(Icons.add),
-                      label: Text('Add Flashcard'),
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add Flashcard'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF76ABAE),
+                        backgroundColor: const Color(0xFF76ABAE),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16.0,
@@ -232,10 +233,10 @@ class _TopicDetailsState extends State<TopicDetails> {
                           ),
                         );
                       },
-                      icon: Icon(Icons.play_arrow),
-                      label: Text('Start'),
+                      icon: const Icon(Icons.play_arrow),
+                      label: const Text('Start'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF76ABAE),
+                        backgroundColor: const Color(0xFF76ABAE),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16.0,

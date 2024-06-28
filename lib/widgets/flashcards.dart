@@ -4,7 +4,7 @@ import '../database_helper.dart';
 class Flashcards extends StatefulWidget {
   final int topicId;
 
-  const Flashcards({Key? key, required this.topicId}) : super(key: key);
+  const Flashcards({super.key, required this.topicId});
 
   @override
   FlashcardsState createState() => FlashcardsState();
@@ -40,20 +40,20 @@ class FlashcardsState extends State<Flashcards> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm'),
-          content: Text('Are you sure you want to delete this item?'),
+          title: const Text('Confirm'),
+          content: const Text('Are you sure you want to delete this item?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              child: Text('Delete'),
+              child: const Text('Delete'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );
@@ -100,7 +100,7 @@ class FlashcardsState extends State<Flashcards> {
                   ),
                   child: ListTile(
                     contentPadding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                        const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
                     title: Text(
                       items[index]['question'],
                       style: const TextStyle(
@@ -117,7 +117,7 @@ class FlashcardsState extends State<Flashcards> {
                     ),
                     trailing: deleteBool
                         ? IconButton(
-                            icon: Icon(Icons.delete),
+                            icon: const Icon(Icons.delete),
                             color: Colors.red,
                             onPressed: () {
                               deleteItem(items[index]['id']);

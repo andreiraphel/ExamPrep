@@ -10,7 +10,7 @@ import '../database_helper.dart';
 enum MenuItem { Delete, Settings, Feedback, Import }
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   _HomeState createState() => _HomeState();
@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SettingsScreen(),
+            builder: (context) => const SettingsScreen(),
           ),
         );
         break;
@@ -64,17 +64,17 @@ class _HomeState extends State<Home> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Import/Export Data'),
+        title: const Text('Import/Export Data'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
               onPressed: _exportData,
-              child: Text('Export Data'),
+              child: const Text('Export Data'),
             ),
             ElevatedButton(
               onPressed: _importData,
-              child: Text('Import Data'),
+              child: const Text('Import Data'),
             ),
           ],
         ),
@@ -117,7 +117,7 @@ class _HomeState extends State<Home> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No data file found to import')),
+          const SnackBar(content: Text('No data file found to import')),
         );
       }
     } catch (e) {
@@ -173,12 +173,12 @@ class _HomeState extends State<Home> {
             fontFamily: 'Roboto',
           ),
         ),
-        backgroundColor: Color(0xFF31363F),
+        backgroundColor: const Color(0xFF31363F),
         actions: [
           if (showCancelButton)
             IconButton(
               onPressed: handleCancel,
-              icon: Icon(Icons.cancel),
+              icon: const Icon(Icons.cancel),
               color: Colors.red,
             )
           else
@@ -210,7 +210,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Topics(key: topicsKey),
-      backgroundColor: Color(0xFFEEEEEE),
+      backgroundColor: const Color(0xFFEEEEEE),
       floatingActionButton: AddItem(topicsKey: topicsKey),
     );
   }

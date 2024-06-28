@@ -5,7 +5,7 @@ import 'topics.dart';
 class AddItem extends StatelessWidget {
   final GlobalKey<TopicsState> topicsKey;
 
-  const AddItem({required this.topicsKey, Key? key}) : super(key: key);
+  const AddItem({required this.topicsKey, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,8 @@ class AddItem extends StatelessWidget {
         );
       },
       tooltip: 'Add Item',
-      child: Icon(Icons.add, color: Color(0xFF76ABAE)),
-      backgroundColor: Color(0xFF222831),
+      backgroundColor: const Color(0xFF222831),
+      child: const Icon(Icons.add, color: Color(0xFF76ABAE)),
     );
   }
 }
