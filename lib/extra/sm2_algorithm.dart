@@ -1,4 +1,3 @@
-import 'dart:math';
 
 class SM2 {
   static void updateFlashcard(Map<String, dynamic> flashcard, int quality) {

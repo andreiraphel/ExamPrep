@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 
-// Class for databasae helper methods
+// Class for database helper methods
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   static Database? _database;
@@ -16,7 +16,7 @@ class DatabaseHelper {
   // Private constructor
   DatabaseHelper._internal();
 
-  // Getter for the databaase instance, initiaalizes the database if it doens't exist
+  // Getter for the database instance, initializes the database if it doesn't exist
   Future<Database> get database async {
     if (_database != null) return _database!;
 
@@ -70,7 +70,8 @@ class DatabaseHelper {
             'ALTER TABLE flashcards ADD COLUMN easeFactor REAL DEFAULT 2.5',
           );
           await db.execute(
-              'ALTER TABLE flashcards ADD COLUMN nextReviewDate INTEGER DEFAULT 0');
+            'ALTER TABLE flashcards ADD COLUMN nextReviewDate INTEGER DEFAULT 0',
+          );
         }
       },
     );
@@ -93,6 +94,16 @@ class DatabaseHelper {
     return await db.query('topics');
   }
 
+  Future<Map<String, dynamic>> getTopicById(int id) async {
+    final db = await database;
+    final topics = await db.query(
+      'topics',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return topics.first;
+  }
+
   // Method to delete a topic by its ID
   Future<void> deleteTopic(int id) async {
     final db = await database;
@@ -105,7 +116,14 @@ class DatabaseHelper {
 
   // Method to insert new flashcard
   Future<void> insertFlashcard(
-      int topicId, String question, String answer) async {
+    int topicId,
+    String question,
+    String answer, {
+    int repetition = 0,
+    int interval = 1,
+    double easeFactor = 2.5,
+    int nextReviewDate = 0,
+  }) async {
     final db = await database;
 
     await db.insert(
@@ -114,10 +132,10 @@ class DatabaseHelper {
         'topic_id': topicId,
         'question': question,
         'answer': answer,
-        'repetition': 0,
-        'interval': 1,
-        'easeFactor': 2.5,
-        'nextReviewDate': 0,
+        'repetition': repetition,
+        'interval': interval,
+        'easeFactor': easeFactor,
+        'nextReviewDate': nextReviewDate,
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -207,5 +225,14 @@ class DatabaseHelper {
       await updateFlashcard(
           flashcardId, repetition, interval, easeFactor, nextReviewDate);
     }
+  }
+
+  Future<List<Map<String, dynamic>>> getTopicByName(String name) async {
+    final db = await database;
+    return await db.query(
+      'topics',
+      where: 'name = ?',
+      whereArgs: [name],
+    );
   }
 }

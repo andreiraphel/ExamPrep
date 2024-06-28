@@ -5,7 +5,7 @@ import '../screens/topic_details.dart';
 import '../screens/flashcard_study_screen.dart';
 
 class Topics extends StatefulWidget {
-  const Topics({Key? key}) : super(key: key);
+  const Topics({super.key});
 
   @override
   TopicsState createState() => TopicsState();
@@ -45,20 +45,20 @@ class TopicsState extends State<Topics> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm'),
-          content: Text('Are you sure you want to delete this item?'),
+          title: const Text('Confirm'),
+          content: const Text('Are you sure you want to delete this item?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              child: Text('Delete'),
+              child: const Text('Delete'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );
@@ -88,8 +88,8 @@ class TopicsState extends State<Topics> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ListTile(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 16.0),
                     title: Text(
                       items[index]['name'],
                       style: const TextStyle(
@@ -112,7 +112,7 @@ class TopicsState extends State<Topics> {
                       children: [
                         if (deleteBool)
                           IconButton(
-                            icon: Icon(Icons.delete),
+                            icon: const Icon(Icons.delete),
                             color: Colors.red,
                             onPressed: () {
                               deleteItem(items[index]['id']);
@@ -133,8 +133,8 @@ class TopicsState extends State<Topics> {
                                             },
                                           )));
                             },
-                            icon: Icon(Icons.add),
-                            color: Color(0xFF76ABAE),
+                            icon: const Icon(Icons.add),
+                            color: const Color(0xFF76ABAE),
                           ),
                           const SizedBox(width: 10),
                           IconButton(
@@ -152,8 +152,8 @@ class TopicsState extends State<Topics> {
                                             flashcards: flashcards,
                                           )));
                             },
-                            icon: Icon(Icons.play_arrow),
-                            color: Color(0xFF76ABAE),
+                            icon: const Icon(Icons.play_arrow),
+                            color: const Color(0xFF76ABAE),
                           ),
                         ]
                       ],

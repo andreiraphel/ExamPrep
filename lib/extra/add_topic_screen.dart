@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../database_helper.dart';
 
 class AddTopicScreen extends StatefulWidget {
-  const AddTopicScreen({Key? key}) : super(key: key);
+  const AddTopicScreen({super.key});
 
   @override
   _AddTopicScreenState createState() => _AddTopicScreenState();
@@ -26,7 +26,7 @@ class _AddTopicScreenState extends State<AddTopicScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Topic'),
+        title: const Text('Add New Topic'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,7 +36,7 @@ class _AddTopicScreenState extends State<AddTopicScreen> {
             children: [
               TextFormField(
                 controller: _topicController,
-                decoration: InputDecoration(labelText: 'Topic Name'),
+                decoration: const InputDecoration(labelText: 'Topic Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a topic name';
@@ -44,10 +44,10 @@ class _AddTopicScreenState extends State<AddTopicScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _addTopic,
-                child: Text('Add Topic'),
+                child: const Text('Add Topic'),
               ),
             ],
           ),

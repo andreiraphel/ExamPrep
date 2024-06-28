@@ -7,16 +7,16 @@ class NewCard extends StatelessWidget {
   final Function() onFlashcardAdded;
 
   const NewCard({
-    Key? key,
+    super.key,
     required this.topicName,
     required this.topicId,
     required this.onFlashcardAdded,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _questionController = TextEditingController();
-    TextEditingController _answerController = TextEditingController();
+    TextEditingController questionController = TextEditingController();
+    TextEditingController answerController = TextEditingController();
 
     final dbHelper = DatabaseHelper();
 
@@ -37,7 +37,7 @@ class NewCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20),
             child: TextField(
-              controller: _questionController,
+              controller: questionController,
               autofocus: true,
               decoration: const InputDecoration(labelText: 'Question'),
               minLines: 1,
@@ -47,7 +47,7 @@ class NewCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20),
             child: TextField(
-              controller: _answerController,
+              controller: answerController,
               autofocus: true,
               decoration: const InputDecoration(labelText: 'Answer'),
               minLines: 1,
@@ -56,13 +56,13 @@ class NewCard extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () async {
-              String question = _questionController.text;
-              String answer = _answerController.text;
+              String question = questionController.text;
+              String answer = answerController.text;
 
               if (question.isNotEmpty && answer.isNotEmpty) {
                 await dbHelper.insertFlashcard(topicId, question, answer);
-                _questionController.clear();
-                _answerController.clear();
+                questionController.clear();
+                answerController.clear();
                 onFlashcardAdded();
                 Navigator.pop(context);
               }
