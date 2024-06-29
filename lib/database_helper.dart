@@ -77,16 +77,6 @@ class DatabaseHelper {
     );
   }
 
-  // Method to insert a new topic
-  Future<void> insertTopic(String name) async {
-    final db = await database;
-
-    await db.insert(
-      'topics',
-      {'name': name},
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
 
   // Method to retrieve all topics
   Future<List<Map<String, dynamic>>> getTopics() async {
@@ -227,12 +217,23 @@ class DatabaseHelper {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTopicByName(String name) async {
-    final db = await database;
-    return await db.query(
-      'topics',
-      where: 'name = ?',
-      whereArgs: [name],
-    );
-  }
+  Future<void> insertTopic(String name) async {
+  final db = await database;
+
+  await db.insert(
+    'topics',
+    {'name': name},
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+
+Future<List<Map<String, dynamic>>> getTopicByName(String name) async {
+  final db = await database;
+  return await db.query(
+    'topics',
+    where: 'name = ?',
+    whereArgs: [name],
+  );
+}
+
 }
