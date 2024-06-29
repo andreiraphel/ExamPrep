@@ -6,6 +6,7 @@ import '../widgets/topics.dart';
 import '../widgets/add_item.dart';
 import '../screens/settings_screen.dart';
 import '../database_helper.dart';
+import 'package:intl/intl.dart';
 
 enum MenuItem { Delete, Settings, Feedback, Import }
 
@@ -102,7 +103,10 @@ class _HomeState extends State<Home> {
                 items: topics.map<DropdownMenuItem<int>>((topic) {
                   return DropdownMenuItem<int>(
                     value: topic['id'],
-                    child: Text(topic['name']),
+                    child: Text(
+                      topic['name'],
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   );
                 }).toList(),
               );
@@ -206,7 +210,10 @@ class _HomeState extends State<Home> {
                   items: files.map<DropdownMenuItem<String>>((file) {
                     return DropdownMenuItem<String>(
                       value: file.path,
-                      child: Text(file.path.split('/').last),
+                      child: Text(
+                        file.path.split('/').last,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     );
                   }).toList(),
                 );
@@ -251,15 +258,23 @@ class _HomeState extends State<Home> {
         Map<int, int> topicIdMap = {}; // Original ID -> New ID map
 
         for (var topic in topics) {
-          String name = topic['name'] ?? 'Untitled';
+          String originalName = topic['name'] ?? 'Untitled';
           int originalTopicId = topic['id'] ?? -1;
 
-          await dbHelper.insertTopic(name);
-          final newTopic = (await dbHelper.getTopicByName(name)).first;
+          // Ensure unique topic name
+          String newTopicName = originalName;
+          int counter = 1;
+          while ((await dbHelper.getTopicByName(newTopicName)).isNotEmpty) {
+            newTopicName = '$originalName ($counter)';
+            counter++;
+          }
+
+          await dbHelper.insertTopic(newTopicName);
+          final newTopic = (await dbHelper.getTopicByName(newTopicName)).first;
           int newTopicId = newTopic['id'];
 
           topicIdMap[originalTopicId] = newTopicId;
-          print('Imported Topic: $name with new ID: $newTopicId');
+          print('Imported Topic: $newTopicName with new ID: $newTopicId');
         }
 
         for (var flashcard in flashcards) {
